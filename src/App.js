@@ -7,6 +7,7 @@ import ExportModal from './components/ExportModal';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [garageName, setGarageName] = useState('My Garage');
   const [levels, setLevels] = useState([]);
   const [selectedLevelId, setSelectedLevelId] = useState(null);
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
@@ -19,13 +20,16 @@ function App() {
     const savedData = localStorage.getItem('garageLayoutEditor');
     if (savedData) {
       try {
-        const { levels: savedLevels, darkMode: savedDarkMode } = JSON.parse(savedData);
+        const { levels: savedLevels, darkMode: savedDarkMode, garageName: savedGarageName } = JSON.parse(savedData);
         if (savedLevels && savedLevels.length > 0) {
           setLevels(savedLevels);
           setSelectedLevelId(savedLevels[0].id);
         }
         if (savedDarkMode !== undefined) {
           setDarkMode(savedDarkMode);
+        }
+        if (savedGarageName) {
+          setGarageName(savedGarageName);
         }
       } catch (e) {
         console.error('Error loading saved data:', e);
@@ -47,9 +51,9 @@ function App() {
   // Save to localStorage whenever data changes
   useEffect(() => {
     if (levels.length > 0) {
-      localStorage.setItem('garageLayoutEditor', JSON.stringify({ levels, darkMode }));
+      localStorage.setItem('garageLayoutEditor', JSON.stringify({ levels, darkMode, garageName }));
     }
-  }, [levels, darkMode]);
+  }, [levels, darkMode, garageName]);
 
   // Apply dark mode
   useEffect(() => {
@@ -114,7 +118,7 @@ function App() {
         return {
           ...baseDevice,
           name: `${deviceType} ${Date.now()}`,
-          garageName: '',
+          garageName: garageName,
           levelName: '',
           flowRules: [
             {
@@ -129,7 +133,7 @@ function App() {
         return {
           ...baseDevice,
           name: `Designable Sign ${Date.now()}`,
-          garageName: '',
+          garageName: garageName,
           levelName: '',
           previewUrl: '',
           override: 'AUTO'
@@ -138,7 +142,7 @@ function App() {
         return {
           ...baseDevice,
           name: `Static Sign ${Date.now()}`,
-          garageName: '',
+          garageName: garageName,
           levelName: '',
           override: 'AUTO'
         };
@@ -146,7 +150,7 @@ function App() {
         return {
           ...baseDevice,
           name: `Space Sensor ${Date.now()}`,
-          garageName: '',
+          garageName: garageName,
           levelName: '',
           serialAddress: '',
           parkingType: 'Standard'
@@ -203,7 +207,19 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1 className="app-title">Garage Layout Editor</h1>
+        <div className="header-left">
+          <h1 className="app-title">Garage Layout Editor</h1>
+          <div className="garage-name-section">
+            <label className="garage-name-label">Garage:</label>
+            <input
+              type="text"
+              className="garage-name-input"
+              value={garageName}
+              onChange={(e) => setGarageName(e.target.value)}
+              placeholder="Enter garage name"
+            />
+          </div>
+        </div>
         <div className="header-actions">
           <button
             className="btn btn-primary"
