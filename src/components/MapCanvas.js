@@ -3,7 +3,7 @@ import { Stage, Layer, Image, Group, Circle, Rect, Line, Text } from 'react-konv
 import useImage from 'use-image';
 
 // Device Icon Components
-function CameraIcon({ device, isSelected, onClick, onDragEnd }) {
+function CameraIcon({ device, isSelected, onClick, onDragEnd, dragBoundFunc }) {
   const x = device.x;
   const y = device.y;
   const rotation = device.rotation || 0;
@@ -16,6 +16,7 @@ function CameraIcon({ device, isSelected, onClick, onDragEnd }) {
       draggable
       onClick={onClick}
       onDragEnd={(e) => onDragEnd(e, device.id)}
+      dragBoundFunc={dragBoundFunc}
     >
       {/* Camera body (bullet style) */}
       <Rect
@@ -45,7 +46,7 @@ function CameraIcon({ device, isSelected, onClick, onDragEnd }) {
   );
 }
 
-function SignIcon({ device, isSelected, onClick, onDragEnd }) {
+function SignIcon({ device, isSelected, onClick, onDragEnd, dragBoundFunc }) {
   return (
     <Group
       x={device.x}
@@ -53,6 +54,7 @@ function SignIcon({ device, isSelected, onClick, onDragEnd }) {
       draggable
       onClick={onClick}
       onDragEnd={(e) => onDragEnd(e, device.id)}
+      dragBoundFunc={dragBoundFunc}
     >
       {/* Sign rectangle */}
       <Rect
@@ -76,7 +78,7 @@ function SignIcon({ device, isSelected, onClick, onDragEnd }) {
   );
 }
 
-function SensorIcon({ device, isSelected, onClick, onDragEnd }) {
+function SensorIcon({ device, isSelected, onClick, onDragEnd, dragBoundFunc }) {
   return (
     <Group
       x={device.x}
@@ -84,6 +86,7 @@ function SensorIcon({ device, isSelected, onClick, onDragEnd }) {
       draggable
       onClick={onClick}
       onDragEnd={(e) => onDragEnd(e, device.id)}
+      dragBoundFunc={dragBoundFunc}
     >
       {/* Sensor circle */}
       <Circle
@@ -114,6 +117,8 @@ function BackgroundImage({ src, rotation }) {
       image={image}
       rotation={rotation || 0}
       opacity={0.7}
+      listening={true}
+      name="backgroundImage"
     />
   );
 }
@@ -129,6 +134,7 @@ function MapCanvas({
   onShowAddDevice
 }) {
   const containerRef = useRef(null);
+  const stageRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
 
   useEffect(() => {
@@ -147,8 +153,11 @@ function MapCanvas({
   }, []);
 
   const handleStageClick = (e) => {
-    // If clicking on stage (not a device), deselect or place device
-    if (e.target === e.target.getStage()) {
+    // If clicking on stage or background image (not a device), deselect or place device
+    const clickedOnBackground = e.target === e.target.getStage() ||
+                                 e.target.getClassName() === 'Image';
+
+    if (clickedOnBackground) {
       if (placementMode) {
         const pos = e.target.getStage().getPointerPosition();
         onPlaceDevice(pos.x, pos.y);
@@ -162,6 +171,14 @@ function MapCanvas({
     if (!placementMode) {
       onSelectDevice(deviceId);
     }
+  };
+
+  const dragBoundFunc = (pos) => {
+    const padding = 50; // Keep some padding from edges
+    return {
+      x: Math.max(padding, Math.min(dimensions.width - padding, pos.x)),
+      y: Math.max(padding, Math.min(dimensions.height - padding, pos.y))
+    };
   };
 
   const handleDragEnd = (e, deviceId) => {
@@ -193,13 +210,23 @@ function MapCanvas({
       </div>
 
       <div className="map-canvas-wrapper" ref={containerRef}>
+        {!level.backgroundImage && !placementMode && (
+          <div className="map-empty-state">
+            <div className="empty-state-icon">🖼️</div>
+            <h3 className="empty-state-title">No Background Image</h3>
+            <p className="empty-state-text">
+              Upload a floor plan or garage layout image in the right panel to get started.
+              Then you can place cameras, signs, and sensors on your layout.
+            </p>
+          </div>
+        )}
+
         {placementMode && (
           <div className="placement-mode-indicator">
             Click on the map to place {placementMode.deviceType}
             <button
               className="btn btn-secondary btn-small"
               onClick={onCancelPlacement}
-              style={{ marginLeft: '12px' }}
             >
               Cancel
             </button>
@@ -207,6 +234,7 @@ function MapCanvas({
         )}
 
         <Stage
+          ref={stageRef}
           width={dimensions.width}
           height={dimensions.height}
           onClick={handleStageClick}
@@ -232,6 +260,7 @@ function MapCanvas({
                     isSelected={isSelected}
                     onClick={() => handleDeviceClick(device.id)}
                     onDragEnd={handleDragEnd}
+                    dragBoundFunc={dragBoundFunc}
                   />
                 );
               } else if (device.type.includes('Sign')) {
@@ -242,6 +271,7 @@ function MapCanvas({
                     isSelected={isSelected}
                     onClick={() => handleDeviceClick(device.id)}
                     onDragEnd={handleDragEnd}
+                    dragBoundFunc={dragBoundFunc}
                   />
                 );
               } else if (device.type === 'Space Sensor') {
@@ -252,6 +282,7 @@ function MapCanvas({
                     isSelected={isSelected}
                     onClick={() => handleDeviceClick(device.id)}
                     onDragEnd={handleDragEnd}
+                    dragBoundFunc={dragBoundFunc}
                   />
                 );
               }

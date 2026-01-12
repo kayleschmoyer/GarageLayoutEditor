@@ -67,16 +67,53 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  background-color: var(--panel-bg);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow);
+  padding: 20px 32px;
+  background: linear-gradient(135deg, var(--panel-bg) 0%, var(--bg-secondary) 100%);
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .app-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   color: var(--text-primary);
+  margin: 0;
+}
+
+.garage-name-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.garage-name-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.garage-name-input {
+  padding: 8px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--input-bg);
+  color: var(--accent-color);
+  min-width: 250px;
+  transition: all 0.2s;
+}
+
+.garage-name-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
 .header-actions {
@@ -138,99 +175,126 @@ body {
 
 /* Level Panel */
 .panel-header {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-secondary);
+  padding: 20px;
+  border-bottom: 2px solid var(--border-color);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
 }
 
 .panel-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
   color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .level-list {
   flex: 1;
   overflow-y: auto;
+  padding: 8px;
 }
 
 .level-item {
-  padding: 12px 16px;
+  padding: 16px;
+  margin-bottom: 8px;
   cursor: pointer;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: all 0.2s;
   color: var(--text-primary);
+  background-color: var(--input-bg);
 }
 
 .level-item:hover {
   background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .level-item.active {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
   color: white;
+  border-color: var(--accent-hover);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transform: translateX(4px);
 }
 
 .level-item-name {
-  font-weight: 500;
-  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 6px;
 }
 
 .level-item-info {
   font-size: 12px;
   color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 .level-item.active .level-item-info {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
 }
 
 /* Buttons */
 .btn {
-  padding: 10px 16px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--shadow);
 }
 
 .btn-primary {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent-color) 100%);
 }
 
 .btn-danger {
-  background-color: var(--danger-color);
+  background: linear-gradient(135deg, var(--danger-color) 0%, var(--danger-hover) 100%);
   color: white;
 }
 
 .btn-danger:hover {
-  background-color: var(--danger-hover);
+  background: linear-gradient(135deg, var(--danger-hover) 0%, var(--danger-color) 100%);
 }
 
 .btn-secondary {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
 }
 
 .btn-secondary:hover {
   background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
 }
 
 .btn-success {
-  background-color: var(--success-color);
+  background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
   color: white;
 }
 
@@ -240,17 +304,18 @@ body {
 
 /* Map Container */
 .map-header {
-  padding: 20px;
-  text-align: center;
-  background-color: var(--panel-bg);
-  border-bottom: 1px solid var(--border-color);
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+  border-bottom: 2px solid var(--accent-hover);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .level-name-display {
   font-size: 28px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .map-actions {
@@ -260,22 +325,89 @@ body {
   margin-top: 12px;
 }
 
+.map-actions .btn-primary {
+  background-color: white;
+  color: var(--accent-color);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.map-actions .btn-primary:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .map-canvas-wrapper {
   flex: 1;
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-secondary);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: 3px solid var(--border-color);
+  box-shadow: inset 0 2px 8px var(--shadow);
+}
+
+[data-theme="dark"] .map-canvas-wrapper {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+.map-empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 48px;
+  background-color: var(--panel-bg);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--shadow);
+  max-width: 400px;
+  border: 2px solid var(--border-color);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.empty-state-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.empty-state-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* Inspector Panel */
 .inspector-content {
-  padding: 20px;
+  padding: 24px;
 }
 
 .inspector-empty {
   text-align: center;
-  padding: 40px 20px;
+  padding: 60px 20px;
   color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  margin: 20px;
+  border: 2px dashed var(--border-color);
 }
 
 .form-group {
@@ -716,15 +848,52 @@ body {
 /* Placement Mode Indicator */
 .placement-mode-indicator {
   position: absolute;
-  top: 16px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
-  padding: 12px 24px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px var(--shadow);
+  padding: 16px 32px;
+  border-radius: 50px;
+  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.4);
   z-index: 10;
-  font-weight: 500;
-  animation: fadeIn 0.3s;
+  font-weight: 600;
+  font-size: 16px;
+  animation: slideDown 0.3s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.placement-mode-indicator::before {
+  content: "📍";
+  font-size: 20px;
+}
+
+.placement-mode-indicator .btn-small {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.placement-mode-indicator .btn-small:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
 }
